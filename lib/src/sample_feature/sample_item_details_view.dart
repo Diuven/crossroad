@@ -1,7 +1,6 @@
 import 'package:crossroad/src/models/course.dart';
 import 'package:crossroad/src/widgets/course.dart';
 import 'package:flutter/material.dart';
-import '../apis/demo.dart';
 
 /// Displays detailed information about a SampleItem.
 class SampleItemDetailsView extends StatelessWidget {

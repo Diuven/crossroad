@@ -1,37 +1,45 @@
 import 'package:crossroad/src/models/course.dart';
 import 'package:flutter/material.dart';
 
-import '../apis/demo.dart';
+import 'package:crossroad/src/apis/index.dart' as apis;
 
 class CourseWidget extends StatefulWidget {
-  const CourseWidget({Key? key}) : super(key: key);
+  final Future<Course>? futureCourse;
+  final Course? course;
+
+  const CourseWidget({super.key, this.futureCourse, this.course});
 
   @override
-  CourseWidgetState createState() => CourseWidgetState();
+  State<CourseWidget> createState() => CourseWidgetState();
 }
 
 class CourseWidgetState extends State<CourseWidget> {
-  late Future<Course> futureCourse;
+  late Future<Course>? futureCourse;
+  late Course? course;
 
   @override
   void initState() {
     super.initState();
-    futureCourse = getCourse();
+    if (widget.futureCourse != null) {
+      futureCourse = widget.futureCourse;
+      futureCourse!.then((course) {
+        if (mounted) {
+          setState(() {
+            this.course = course;
+          });
+        }
+      });
+    } else {
+      course = widget.course;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Course>(
-      future: futureCourse,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final course = snapshot.data!;
-          return Text("${course.subjectId} ${course.title}");
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-        return const CircularProgressIndicator();
-      },
-    );
+    if (course != null) {
+      return Text("${course!.subjectId} ${course!.title}");
+    } else {
+      return const CircularProgressIndicator();
+    }
   }
 }
