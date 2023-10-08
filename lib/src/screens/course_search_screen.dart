@@ -117,9 +117,9 @@ class _SearchDelegate extends SearchDelegate<String> {
             itemBuilder: (BuildContext context, int index) {
               final course = courses[index];
               return ListTile(
-                  title: Text(course.title),
+                  title: Text(course.title!),
                   onTap: () {
-                    close(context, course.subjectId);
+                    close(context, course.subjectId!);
                   });
             },
           );

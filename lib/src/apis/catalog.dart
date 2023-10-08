@@ -12,11 +12,9 @@ Future<List<Course>> getAllCourses() async {
   if (statusCode != 200) {
     throw Exception('Error on $path: $statusCode');
   }
-  print(response.body.toString());
 
   final List<dynamic> body = jsonDecode(response.body);
-  final courses =
-      body.map<Course>((course) => Course.fromJson(course)).toList();
+  final courses = body.map<Course>((course) => Course.fromMap(course)).toList();
   return courses;
 }
 
@@ -32,6 +30,6 @@ Future<Course> getCourseBySubjectId(String subjectId) async {
     }
   }
   final courseBody = jsonDecode(response.body);
-  final course = Course.fromJson(courseBody);
+  final course = Course.fromMap(courseBody);
   return course;
 }
